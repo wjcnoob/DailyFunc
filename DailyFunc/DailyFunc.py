@@ -7,6 +7,8 @@
 """
 import os
 import shutil
+import shutil
+import csv
 
 
 def gather_all_xx_files(source_dir, dest_dir, suffix):
@@ -26,6 +28,18 @@ def gather_all_xx_files(source_dir, dest_dir, suffix):
                 if file.endswith(suffix) and not file.startswith("~"):
                     file_path = os.path.join(root, file)
                     shutil.copy(file_path, dest_dir)
+
+def copy_and_replace_delimiter(file_path, destination_path, old_delimiter, new_delimiter):
+    shutil.copy(file_path, destination_path)
+    with open(destination_path, 'r') as file:
+        reader = csv.reader(file, delimiter=old_delimiter)
+        data = list(reader)
+    with open(destination_path, 'w', newline='') as file:
+        writer = csv.writer(file, delimiter=new_delimiter)
+        writer.writerows(data)
+
+
+
 
 
 if __name__ == '__main__':
