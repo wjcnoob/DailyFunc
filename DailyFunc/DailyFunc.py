@@ -40,6 +40,22 @@ def copy_and_replace_delimiter(file_path, destination_path, old_delimiter, new_d
 
 
 
+def copy_replace_rename(file_path, old_delimiter, new_delimiter):
+    file_dir = os.path.dirname(file_path)
+    file_name = os.path.basename(file_path)
+    new_file_name = file_name + '.new'
+    new_file_path = os.path.join(file_dir, new_file_name)
+    bak_file_name = file_name + '.bak'
+    bak_file_path = os.path.join(file_dir, bak_file_name)
+    shutil.copy(file_path, new_file_path)
+    with open(new_file_path, 'r') as file:
+        reader = csv.reader(file, delimiter=old_delimiter)
+        data = list(reader)
+    with open(new_file_path, 'w', newline='') as file:
+        writer = csv.writer(file, delimiter=new_delimiter)
+        writer.writerows(data)
+    os.rename(file_path, bak_file_path)
+    os.rename(new_file_path, file_path)
 
 
 if __name__ == '__main__':
