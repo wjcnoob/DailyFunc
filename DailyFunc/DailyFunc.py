@@ -7,7 +7,6 @@
 """
 import os
 import shutil
-import shutil
 import csv
 
 
