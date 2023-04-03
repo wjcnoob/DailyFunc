@@ -41,6 +41,13 @@ def copy_and_replace_delimiter(file_path, destination_path, old_delimiter, new_d
 
 
 def copy_replace_rename(file_path, old_delimiter, new_delimiter):
+    '''
+    复制某个文件到原文件所在目录，并且替换新文件的列分隔符，将原文件名新增后缀.bak
+    :param file_path:
+    :param old_delimiter:
+    :param new_delimiter:
+    :return:
+    '''
     file_dir = os.path.dirname(file_path)
     file_name = os.path.basename(file_path)
     new_file_name = file_name + '.new'
@@ -49,17 +56,15 @@ def copy_replace_rename(file_path, old_delimiter, new_delimiter):
     bak_file_path = os.path.join(file_dir, bak_file_name)
     shutil.copy(file_path, new_file_path)
     with open(new_file_path, 'r') as file:
-        reader = csv.reader(file, delimiter=old_delimiter)
-        data = list(reader)
+        data = file.read()
     with open(new_file_path, 'w', newline='') as file:
-        writer = csv.writer(file, delimiter=new_delimiter)
-        writer.writerows(data)
+        file.write(data.replace(old_delimiter,new_delimiter))
     os.rename(file_path, bak_file_path)
     os.rename(new_file_path, file_path)
 
 
 if __name__ == '__main__':
-    source_dir = r'F:\黑马-java\5、超哇塞的Java基础教程\资料\基础篇'
-    dest_dir = r'F:\黑马-java\5、超哇塞的Java基础教程\资料\基础篇\ppt汇总'
-    suffix = ('.pptx', '.exe')
+    source_dir = r'/Users/zbc/黑马-java/5、超哇塞的Java基础教程/资料/进阶篇'
+    dest_dir = r'/Users/zbc/黑马-java/5、超哇塞的Java基础教程/资料/进阶篇/ppt汇总'
+    suffix = ('.pptx',)
     gather_all_xx_files(source_dir, dest_dir, suffix)
